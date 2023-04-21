@@ -1,14 +1,15 @@
 import { Flex, Image } from '@chakra-ui/react';
 import { Text, Input, Link, Button } from 'components'
+import { useNavigate } from 'react-router-dom';
 
 export const LoginScreen = () => {
+  const navitage = useNavigate()
   return (
     <Flex flexDir='row' w='100vw' h='100vh'>
       <Flex 
         alignItems={['center', 'flex-start']} 
         justifyContent='center' 
-        paddingLeft={['0px', '0px', '0px', '112px']} 
-        padding={['24px', '48px', '80px', '60px']}
+        padding={['24px', '48px', '80px', '112px']}
         flexDir='column' 
         w={['100%', '100%', '100%', '50%']} 
         h='100%'
@@ -24,7 +25,7 @@ export const LoginScreen = () => {
           </Flex>
           
           <Button mt='24px'>Login</Button>
-          <Link.Action mt='48px' text='Não possui uma conta?' actionText='Cadastre-se aqui' />
+          <Link.Action onClick={() => navitage('/cadastrar')} mt='48px' text='Não possui uma conta?' actionText='Cadastre-se aqui' />
         </Flex>
       </Flex>
       <Flex w={['0%', '0%', '0%', '50%']} h='100vh' 
