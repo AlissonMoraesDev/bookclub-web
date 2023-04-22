@@ -1,11 +1,39 @@
-import { Flex, Image } from '@chakra-ui/react'
+import { Flex, Image, useToast } from '@chakra-ui/react'
 import { Text, Input, Link, Button } from 'components'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { useMutation } from 'react-query'
+import { loginCall } from 'services/api/requests'
+import { saveItem } from 'services/storage'
+
 
 export const LoginScreen = () => {
   const navitage = useNavigate()
+
+  const toast = useToast()
+
+  const mutation = useMutation((newUser) => loginCall(newUser), {
+    onError: (error) => {
+      toast({
+        title: 'Falha ao realizar login.',
+        description: error?.response?.data?.error || 'Por favor, tente novamente',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      })
+    },
+    onSuccess: (data) => {
+      toast({
+        title: 'Login efetuado com sucesso!',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+      })
+      saveItem('@bookclub_TOKEN', data?.data?.token)
+      navitage('/home')
+    }
+  })
 
   const { handleSubmit, values, handleChange, errors} = useFormik({
     initialValues: {
@@ -20,7 +48,8 @@ export const LoginScreen = () => {
         .min(6, 'A senha deve ter pelo menos 6 caracteres')
         .required('Senha é obrigatório')
     }),
-    onSubmit: (data) => {
+    onSubmit: (data) => { 
+      mutation.mutate(data)
     }
   })
 
@@ -41,7 +70,8 @@ export const LoginScreen = () => {
           <Text.ScreenTitle mt='48px'>Login</Text.ScreenTitle>
           <Input
             id='email'
-            name='email' 
+            name='email'
+            type='email' 
             value={values.email} 
             mt='24px' 
             onChange={handleChange}
@@ -63,7 +93,7 @@ export const LoginScreen = () => {
             <Link onClick={() => navitage('/recuperar-senha')}>Esqueceu a sua senha?</Link>
           </Flex>
           
-          <Button onClick={handleSubmit} mb='12px' mt='24px'>Login</Button>
+          <Button isLoading={mutation.isLoading} onClick={handleSubmit} mb='12px' mt='24px'>Login</Button>
           <Link.Action onClick={() => navitage('/cadastrar')} mt={['8px', '16px']} text='Não possui uma conta?' actionText='Cadastre-se aqui' />
         </Flex>
       </Flex>
