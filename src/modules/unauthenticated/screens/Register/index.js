@@ -23,8 +23,8 @@ export const RegisterScreen = () => {
           <Input.Password mt='16px' placeholder='Senha' />
           <Input.Password mt='16px' placeholder='Confirmar senha' />
           
-          <Button mt='24px'>Cadastrar</Button>
-          <Link.Action onClick={() => navitage('/')} mt={['48px', '16px']} text='Já possui uma conta?' actionText='Faça o login aqui.' />
+          <Button mb='12px' mt='24px'>Cadastrar</Button>
+          <Link.Action onClick={() => navitage('/')} mt={['8px', '16px']} text='Já possui uma conta?' actionText='Faça o login aqui.' />
         </Flex>
       </Flex>
       <Flex w={['0%', '0%', '0%', '80%']} h='100vh' 
