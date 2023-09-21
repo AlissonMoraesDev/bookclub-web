@@ -1,6 +1,10 @@
-import { LoginScreen, RegisterScreen, ForgotPasswordScreen, ResetPasswordScreen } from "../screens";
+import { LoginScreen, RegisterScreen, ForgotPasswordScreen, ResetPasswordScreen, PageNotFound } from "../screens";
 
 export const unauthRoutes = [
+  {
+    path: "*",
+    element: <PageNotFound />
+  },
   {
     path: "/",
     element: <LoginScreen />
